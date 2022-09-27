@@ -1,4 +1,4 @@
-package scanner.model;
+package com.uk.reformattool.scanner.model;
 
 import lombok.AllArgsConstructor;
 

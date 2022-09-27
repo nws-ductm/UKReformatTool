@@ -1,4 +1,4 @@
-package common.module;
+package com.uk.reformattool.common.module;
 
 import java.util.Arrays;
 import java.util.ServiceLoader;

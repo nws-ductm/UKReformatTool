@@ -1,4 +1,4 @@
-**Search conditions for scanner**
+**Search conditions for com.uk.reformattool.scanner**
 
 - File extension: *.java
 - File name ends with: Query, QueryProcessor, QueryProcesser, Finder

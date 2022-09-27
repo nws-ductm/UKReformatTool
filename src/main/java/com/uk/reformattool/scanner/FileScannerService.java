@@ -1,11 +1,12 @@
-package scanner;
+package com.uk.reformattool.scanner;
 
-import common.module.AbstractModuleHandler;
-import common.module.FlowType;
-import common.module.ModuleLevel;
-import common.module.ModuleService;
+import com.uk.reformattool.common.module.AbstractModuleHandler;
+import com.uk.reformattool.common.module.FlowType;
+import com.uk.reformattool.common.module.ModuleLevel;
+import com.uk.reformattool.common.module.ModuleService;
+import com.uk.reformattool.common.utils.AppConfig;
+import com.uk.reformattool.scanner.model.FileModel;
 import lombok.SneakyThrows;
-import scanner.model.FileModel;
 
 import java.io.IOException;
 import java.nio.file.*;
@@ -18,26 +19,26 @@ import java.util.regex.Pattern;
 @ModuleService(flowTypes = FlowType.SCAN_WORKSPACE, level = ModuleLevel.FILE_LEVEL)
 public class FileScannerService extends AbstractModuleHandler {
 
-    private static final String FILE_PATTERN = "(Query|QueryProcessor|QueryProcesser|Finder)\\w*.java";
+    private static final String FILE_PATTERN = "(%s)\\w*.java";
     private static final String DIRECTORY_PATTERN = "nts\\.uk\\..+app(\\\\src\\\\main\\\\java.*|\\\\src\\\\main|\\\\src)*$" +
             "|^\\\\[^.]((?!nts\\.uk\\..+).)*$";
 
     @Override
     protected void execute(List<FileModel> fileModels) {
-        // TODO: switch to relative directory
-        Path rootDirectory = Paths.get("D:/Workspace/UK_test/UniversalK/nts.uk");
+        Path rootDirectory = Paths.get(AppConfig.rootDirectory());
         List<String> contexts = this.getAllContexts(rootDirectory);
         contexts.parallelStream().forEach(context -> this.scanFiles(context, rootDirectory.resolve(context), fileModels));
     }
 
     @SneakyThrows(IOException.class)
     private void scanFiles(String context, Path rootDirectory, final List<FileModel> files) {
+        final String filePattern = String.format(FILE_PATTERN, String.join("|", AppConfig.suffixes()));
         Files.walkFileTree(rootDirectory, new SimpleFileVisitor<Path>() {
             @Override
             public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) {
                 if (attrs.isRegularFile()) {
                     String fileName = file.getFileName().toString();
-                    Pattern pattern = Pattern.compile(FILE_PATTERN);
+                    Pattern pattern = Pattern.compile(filePattern);
                     Matcher matcher = pattern.matcher(fileName);
                     if (matcher.find()) {
                         files.add(new FileModel(context, file));

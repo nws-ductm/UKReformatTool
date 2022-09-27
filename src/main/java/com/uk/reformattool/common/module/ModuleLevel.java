@@ -1,4 +1,4 @@
-package common.module;
+package com.uk.reformattool.common.module;
 
 import lombok.AllArgsConstructor;
 
