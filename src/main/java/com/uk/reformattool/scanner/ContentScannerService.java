@@ -1,8 +1,8 @@
 package com.uk.reformattool.scanner;
 
+import com.uk.reformattool.common.annotations.ModuleService;
 import com.uk.reformattool.common.module.AbstractModuleHandler;
 import com.uk.reformattool.common.module.ModuleLevel;
-import com.uk.reformattool.common.module.ModuleService;
 import com.uk.reformattool.scanner.model.FileModel;
 import lombok.SneakyThrows;
 import org.apache.commons.io.FileUtils;
@@ -30,7 +30,7 @@ public class ContentScannerService extends AbstractModuleHandler {
     protected List<FileModel> postExecute(List<FileModel> fileModels) {
         // TODO: Log list to file csv
         List<FileModel> results = fileModels.stream().filter(FileModel::isValidForReformat).collect(Collectors.toList());
-        getLogger().info(results);
+//        getLogger().info(results);
         return results;
     }
 

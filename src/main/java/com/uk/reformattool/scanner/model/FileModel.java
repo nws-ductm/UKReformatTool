@@ -1,5 +1,6 @@
 package com.uk.reformattool.scanner.model;
 
+import com.opencsv.bean.CsvBindByName;
 import com.uk.reformattool.common.utils.AppConfig;
 import lombok.Data;
 
@@ -9,8 +10,11 @@ import java.util.Comparator;
 
 @Data
 public class FileModel implements Comparable<FileModel> {
+    @CsvBindByName
     private final String ukFileContext;
+    @CsvBindByName
     private final String relativePath;
+    @CsvBindByName
     private final String fileName;
     private final String className;
     private final FileType fileType;
@@ -29,7 +33,7 @@ public class FileModel implements Comparable<FileModel> {
     }
 
     public File createFile() {
-        String filePath = AppConfig.rootDirectory() + "/%s/%s/%s";
+        String filePath = AppConfig.getInstance().getRootDirectory() + "/%s/%s/%s";
         return new File(String.format(filePath, ukFileContext, relativePath, fileName));
     }
 

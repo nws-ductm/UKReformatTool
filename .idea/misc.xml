@@ -2,7 +2,7 @@
 <project version="4">
   <component name="EntryPointsManager">
     <list size="1">
-      <item index="0" class="java.lang.String" itemvalue="com.uk.reformattool.common.module.ModuleService" />
+      <item index="0" class="java.lang.String" itemvalue="com.uk.reformattool.common.annotations.ModuleService" />
     </list>
   </component>
   <component name="ExternalStorageConfigurationManager" enabled="true" />

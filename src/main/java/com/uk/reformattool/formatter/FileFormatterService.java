@@ -1,8 +1,8 @@
 package com.uk.reformattool.formatter;
 
+import com.uk.reformattool.common.annotations.ModuleService;
 import com.uk.reformattool.common.module.AbstractModuleHandler;
 import com.uk.reformattool.common.module.ModuleLevel;
-import com.uk.reformattool.common.module.ModuleService;
 import com.uk.reformattool.scanner.model.FileModel;
 import lombok.SneakyThrows;
 

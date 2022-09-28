@@ -18,8 +18,7 @@ public class ScannerTest {
         AppConfig.init();
 
         AbstractModuleHandler service = ModuleHandlerFactory.get(FlowType.SCAN_WORKSPACE, ModuleLevel.FILE_LEVEL);
-        service.setNext(ModuleHandlerFactory.get(FlowType.SCAN_WORKSPACE, ModuleLevel.CONTENT_LEVEL))
-                .setNext(ModuleHandlerFactory.get(FlowType.SCAN_WORKSPACE, ModuleLevel.FORMAT_LEVEL));
+        service.setNext(ModuleHandlerFactory.get(FlowType.SCAN_WORKSPACE, ModuleLevel.CONTENT_LEVEL));
         List<FileModel> fileModels = Collections.synchronizedList(new LinkedList<>());
         service.executeTask(ModuleLevel.FILE_LEVEL.value, fileModels);
     }

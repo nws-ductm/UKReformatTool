@@ -1,0 +1,8 @@
+<aspectj>
+    <aspects>
+        <aspect name="com.uk.reformattool.common.module.MainExecutionMethodAspect"/>
+        <weaver options="-verbose -showWeaveInfo">
+            <include within="*"/>
+        </weaver>
+    </aspects>
+</aspectj>

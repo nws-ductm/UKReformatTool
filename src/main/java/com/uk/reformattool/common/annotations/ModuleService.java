@@ -1,4 +1,7 @@
-package com.uk.reformattool.common.module;
+package com.uk.reformattool.common.annotations;
+
+import com.uk.reformattool.common.module.FlowType;
+import com.uk.reformattool.common.module.ModuleLevel;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

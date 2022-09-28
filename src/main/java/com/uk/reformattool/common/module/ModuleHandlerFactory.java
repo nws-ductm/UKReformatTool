@@ -1,5 +1,7 @@
 package com.uk.reformattool.common.module;
 
+import com.uk.reformattool.common.annotations.ModuleService;
+
 import java.util.Arrays;
 import java.util.ServiceLoader;
 

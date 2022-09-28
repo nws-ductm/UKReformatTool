@@ -1,12 +1,9 @@
 package com.uk.reformattool.common.module;
 
+import com.uk.reformattool.common.annotations.ModuleService;
 import com.uk.reformattool.scanner.model.FileModel;
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
 
 import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
 
 /**
  * Base class for module service
@@ -17,10 +14,6 @@ public abstract class AbstractModuleHandler {
     private AbstractModuleHandler nextHandler;
 
     protected abstract void execute(List<FileModel> fileModels);
-
-    protected Logger getLogger() {
-        return LogManager.getLogger(this.getClass());
-    }
 
     protected List<FileModel> postExecute(List<FileModel> fileModels) {
         return fileModels;
@@ -34,12 +27,7 @@ public abstract class AbstractModuleHandler {
         } else {
             throw new RuntimeException("Wrong module execution order!!");
         }
-        Map<String, Long> resultCounts = fileModels.stream()
-                .collect(Collectors.groupingBy(FileModel::getUkFileContext, Collectors.counting()));
-        getLogger().info(resultCounts);
-        if (nextHandler != null) {
-            nextHandler.executeTask(level + 1, fileModels);
-        }
+        this.nextTask(level, fileModels);
     }
 
     public AbstractModuleHandler setNext(AbstractModuleHandler handler) {
@@ -49,6 +37,12 @@ public abstract class AbstractModuleHandler {
             this.nextHandler.setNext(handler);
         }
         return this;
+    }
+
+    private void nextTask(int level, List<FileModel> fileModels) {
+        if (this.nextHandler != null) {
+            this.nextHandler.executeTask(level, fileModels);
+        }
     }
 
     private ModuleLevel getModuleLevel() {
