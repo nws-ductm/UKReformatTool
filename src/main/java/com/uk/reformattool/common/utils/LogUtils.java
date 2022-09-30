@@ -1,23 +1,16 @@
 package com.uk.reformattool.common.utils;
 
-import com.opencsv.CSVWriter;
-import com.opencsv.bean.CsvBindByName;
 import com.uk.reformattool.common.module.ModuleLevel;
 import com.uk.reformattool.scanner.model.FileModel;
 import lombok.SneakyThrows;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.FileWriter;
-import java.io.Writer;
-import java.lang.reflect.Field;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import java.util.stream.Collectors;
 
 public class LogUtils {
@@ -54,28 +47,6 @@ public class LogUtils {
             Files.createDirectory(path);
         }
         Path tempFile = Files.createTempFile(path, AppConfig.getInstance().getTempPrefix(), ".csv");
-
-        try (Writer in = new FileWriter(tempFile.toString())) {
-            CSVWriter writer = new CSVWriter(in, CSVWriter.DEFAULT_SEPARATOR, CSVWriter.NO_QUOTE_CHARACTER,
-                    CSVWriter.DEFAULT_ESCAPE_CHARACTER, CSVWriter.DEFAULT_LINE_END);
-            List<Field> fields = Arrays.asList(FileModel.class.getDeclaredFields());
-            writer.writeNext(fields.stream().filter(f -> f.isAnnotationPresent(CsvBindByName.class))
-                    .map(Field::getName).toArray(String[]::new));
-            for (FileModel fileModel : fileModels) {
-                writer.writeNext(fields.stream().map(f -> {
-                    if (f.isAnnotationPresent(CsvBindByName.class)) {
-                        try {
-                            f.setAccessible(true);
-                            return String.valueOf(f.get(fileModel));
-                        } catch (IllegalAccessException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                    return null;
-                }).filter(Objects::nonNull).toArray(String[]::new));
-            }
-            writer.close();
-        }
-        return tempFile.toString();
+        return CsvUtils.writeFile(tempFile, fileModels, FileModel.class);
     }
 }

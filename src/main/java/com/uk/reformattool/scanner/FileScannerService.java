@@ -11,7 +11,6 @@ import lombok.SneakyThrows;
 import java.io.IOException;
 import java.nio.file.*;
 import java.nio.file.attribute.BasicFileAttributes;
-import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.function.Function;
@@ -29,7 +28,7 @@ public class FileScannerService extends AbstractModuleHandler {
     @Override
     protected void execute(List<FileModel> fileModels) {
         Path rootDirectory = Paths.get(AppConfig.getInstance().getRootDirectory());
-        List<String> contexts = this.getAllContexts(rootDirectory);
+        List<String> contexts = AppConfig.getInstance().getContexts();
         contexts.parallelStream().forEach(context -> this.scanFiles(context, rootDirectory.resolve(context), fileModels));
     }
 
@@ -66,21 +65,5 @@ public class FileScannerService extends AbstractModuleHandler {
                 return FileVisitResult.SKIP_SUBTREE;
             }
         });
-    }
-
-    @SneakyThrows(IOException.class)
-    private List<String> getAllContexts(Path rootDirectory) {
-        List<String> results = new ArrayList<>();
-        Files.walkFileTree(rootDirectory, new SimpleFileVisitor<Path>() {
-            @Override
-            public FileVisitResult preVisitDirectory(Path dir, BasicFileAttributes attrs) {
-                if (!dir.toString().equals(rootDirectory.toString())) {
-                    results.add(dir.getFileName().toString());
-                    return FileVisitResult.SKIP_SUBTREE;
-                }
-                return FileVisitResult.CONTINUE;
-            }
-        });
-        return results;
     }
 }

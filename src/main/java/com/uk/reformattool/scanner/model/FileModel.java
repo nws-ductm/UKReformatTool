@@ -10,11 +10,11 @@ import java.util.Comparator;
 
 @Data
 public class FileModel implements Comparable<FileModel> {
-    @CsvBindByName
+    @CsvBindByName(column = "UK_File_Context")
     private final String ukFileContext;
-    @CsvBindByName
+    @CsvBindByName(column = "Relative_Path")
     private final String relativePath;
-    @CsvBindByName
+    @CsvBindByName(column = "File_Name")
     private final String fileName;
     private final String className;
     private final FileType fileType;
