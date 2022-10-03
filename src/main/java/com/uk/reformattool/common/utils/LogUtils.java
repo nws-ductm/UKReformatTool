@@ -1,7 +1,8 @@
 package com.uk.reformattool.common.utils;
 
+import com.uk.reformattool.common.model.BasicFileInfo;
+import com.uk.reformattool.common.model.FileModel;
 import com.uk.reformattool.common.module.ModuleLevel;
-import com.uk.reformattool.scanner.model.FileModel;
 import lombok.SneakyThrows;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,6 +25,11 @@ public class LogUtils {
 
     public static void log(ModuleLevel level, List<FileModel> fileModels) {
         Logger logger = LoggerFactory.getLogger(level.name());
+        if (fileModels.isEmpty()) {
+            logger.info("Couldn't find any file that matches conditions. All files are valid.");
+            logger.info("Process is now closed.");
+            return;
+        }
         Map<String, Long> resultCounts = fileModels.stream()
                 .collect(Collectors.groupingBy(FileModel::getUkFileContext, Collectors.counting()));
         logger.info("Currently processing: {}", resultCounts);
@@ -47,6 +53,7 @@ public class LogUtils {
             Files.createDirectory(path);
         }
         Path tempFile = Files.createTempFile(path, AppConfig.getInstance().getTempPrefix(), ".csv");
-        return CsvUtils.writeFile(tempFile, fileModels, FileModel.class);
+        List<BasicFileInfo> datas = fileModels.stream().map(FileModel::toBasicFileInfo).collect(Collectors.toList());
+        return CsvUtils.writeFile(tempFile, datas, BasicFileInfo.class);
     }
 }

@@ -1,33 +1,27 @@
-package com.uk.reformattool.scanner.model;
+package com.uk.reformattool.common.model;
 
-import com.opencsv.bean.CsvBindByName;
 import com.uk.reformattool.common.utils.AppConfig;
 import lombok.Data;
 
 import java.io.File;
-import java.nio.file.Path;
 import java.util.Comparator;
 
 @Data
 public class FileModel implements Comparable<FileModel> {
-    @CsvBindByName(column = "UK_File_Context")
     private final String ukFileContext;
-    @CsvBindByName(column = "Relative_Path")
     private final String relativePath;
-    @CsvBindByName(column = "File_Name")
     private final String fileName;
     private final String className;
     private final FileType fileType;
     private Integer importStartPosition;
     private Integer annotationStartPosition;
     private boolean hasAnnotation;
+    private boolean isExist;
 
-    public FileModel(String context, Path file) {
-        String fullPath = file.getParent().toString();
-        int index = fullPath.indexOf(context + "\\");
-        this.ukFileContext = context;
-        this.relativePath = fullPath.substring(index + context.length() + 1);
-        this.fileName = file.getFileName().toString();
+    public FileModel(BasicFileInfo basicFileInfo) {
+        this.ukFileContext = basicFileInfo.getUkFileContext();
+        this.relativePath = basicFileInfo.getRelativePath();
+        this.fileName = basicFileInfo.getFileName();
         this.fileType = FileType.getByName(fileName);
         this.className = fileName.replace(".java", "");
     }
@@ -37,8 +31,13 @@ public class FileModel implements Comparable<FileModel> {
         return new File(String.format(filePath, ukFileContext, relativePath, fileName));
     }
 
+    public BasicFileInfo toBasicFileInfo() {
+        return new BasicFileInfo(ukFileContext, relativePath, fileName);
+    }
+
     public boolean isValidForReformat() {
-        return this.importStartPosition != null && this.annotationStartPosition != null && !this.hasAnnotation;
+        return this.isExist && this.importStartPosition != null && this.annotationStartPosition != null
+                && !this.hasAnnotation;
     }
 
     public String toString() {

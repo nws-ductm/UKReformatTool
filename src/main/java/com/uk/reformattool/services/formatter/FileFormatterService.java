@@ -1,9 +1,9 @@
-package com.uk.reformattool.formatter;
+package com.uk.reformattool.services.formatter;
 
 import com.uk.reformattool.common.annotations.ModuleService;
+import com.uk.reformattool.common.model.FileModel;
 import com.uk.reformattool.common.module.AbstractModuleHandler;
 import com.uk.reformattool.common.module.ModuleLevel;
-import com.uk.reformattool.scanner.model.FileModel;
 import lombok.SneakyThrows;
 
 import java.nio.file.Files;

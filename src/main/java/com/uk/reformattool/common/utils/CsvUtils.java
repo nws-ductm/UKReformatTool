@@ -46,7 +46,9 @@ public class CsvUtils {
     public static <T> List<T> readFile(Path file, Class<T> c) throws IOException {
         try (Reader reader = Files.newBufferedReader(file)) {
             CsvToBean<T> cb = new CsvToBeanBuilder<T>(reader)
-                    .withType(c).build();
+                    .withType(c).withEscapeChar(CSVWriter.DEFAULT_ESCAPE_CHARACTER)
+                    .withSeparator(CSVWriter.DEFAULT_SEPARATOR)
+                    .withQuoteChar(CSVWriter.NO_QUOTE_CHARACTER).build();
             return cb.parse();
         }
     }

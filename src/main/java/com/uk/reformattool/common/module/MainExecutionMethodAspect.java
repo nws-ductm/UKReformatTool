@@ -1,9 +1,9 @@
 package com.uk.reformattool.common.module;
 
 import com.uk.reformattool.common.annotations.ModuleService;
+import com.uk.reformattool.common.model.FileModel;
 import com.uk.reformattool.common.utils.LogUtils;
 import com.uk.reformattool.common.utils.TimerUtils;
-import com.uk.reformattool.scanner.model.FileModel;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
@@ -35,7 +35,6 @@ public class MainExecutionMethodAspect {
     @Around("executeTask()")
     public Object aroundExecuteTask(ProceedingJoinPoint joinPoint) {
         TimerUtils.start();
-        Object obj = null;
         // Get module level
         Class<?> c = joinPoint.getTarget().getClass();
         ModuleService annotation = c.getAnnotation(ModuleService.class);
@@ -43,13 +42,13 @@ public class MainExecutionMethodAspect {
         // Process start
         LogUtils.log(level, "Process start...");
         try {
-            obj = joinPoint.proceed();
+            return joinPoint.proceed();
         } catch (Throwable e) {
             // Handle exception
             e.printStackTrace();
             LogUtils.error(level, e);
+            return null;
         }
-        return obj;
     }
 
     @Before("nextTask()")

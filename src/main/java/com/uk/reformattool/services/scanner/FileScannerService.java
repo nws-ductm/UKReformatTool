@@ -1,11 +1,12 @@
-package com.uk.reformattool.scanner;
+package com.uk.reformattool.services.scanner;
 
 import com.uk.reformattool.common.annotations.ModuleService;
+import com.uk.reformattool.common.model.BasicFileInfo;
+import com.uk.reformattool.common.model.FileModel;
 import com.uk.reformattool.common.module.AbstractModuleHandler;
 import com.uk.reformattool.common.module.FlowType;
 import com.uk.reformattool.common.module.ModuleLevel;
 import com.uk.reformattool.common.utils.AppConfig;
-import com.uk.reformattool.scanner.model.FileModel;
 import lombok.SneakyThrows;
 
 import java.io.IOException;
@@ -49,7 +50,7 @@ public class FileScannerService extends AbstractModuleHandler {
                     Pattern pattern = Pattern.compile(filePattern);
                     Matcher matcher = pattern.matcher(fileName);
                     if (matcher.find()) {
-                        files.add(new FileModel(context, file));
+                        files.add(new FileModel(BasicFileInfo.create(context, file)));
                     }
                 }
                 return FileVisitResult.CONTINUE;

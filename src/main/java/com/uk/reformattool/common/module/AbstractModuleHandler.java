@@ -1,7 +1,7 @@
 package com.uk.reformattool.common.module;
 
 import com.uk.reformattool.common.annotations.ModuleService;
-import com.uk.reformattool.scanner.model.FileModel;
+import com.uk.reformattool.common.model.FileModel;
 
 import java.util.List;
 
@@ -27,7 +27,7 @@ public abstract class AbstractModuleHandler {
         } else {
             throw new RuntimeException("Wrong module execution order!!");
         }
-        this.nextTask(level, fileModels);
+        this.nextTask(currentLevel, fileModels);
     }
 
     public AbstractModuleHandler setNext(AbstractModuleHandler handler) {
@@ -40,7 +40,7 @@ public abstract class AbstractModuleHandler {
     }
 
     private void nextTask(int level, List<FileModel> fileModels) {
-        if (this.nextHandler != null) {
+        if (this.nextHandler != null && !fileModels.isEmpty()) {
             this.nextHandler.executeTask(level, fileModels);
         }
     }
