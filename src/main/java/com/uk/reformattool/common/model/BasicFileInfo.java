@@ -15,11 +15,11 @@ import java.nio.file.Path;
 @AllArgsConstructor
 public class BasicFileInfo {
 
-    @CsvBindByName(column = "UK_File_Context")
+    @CsvBindByName(column = "uk_file_context")
     private String ukFileContext;
-    @CsvBindByName(column = "Relative_Path")
+    @CsvBindByName(column = "relative_path")
     private String relativePath;
-    @CsvBindByName(column = "File_Name")
+    @CsvBindByName(column = "file_name")
     private String fileName;
 
     public static BasicFileInfo create(String context, Path file) {
