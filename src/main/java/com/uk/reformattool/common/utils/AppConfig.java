@@ -53,6 +53,12 @@ public class AppConfig {
     @PropValue("application.settings.reformatFile")
     private boolean reformatFile;
 
+    @PropValue("application.settings.import.asFile")
+    private boolean importAsFile;
+
+    @PropValue("application.settings.import.asAPI")
+    private boolean importAsAPI;
+
     public static boolean init() {
         try {
             Properties properties = properties();

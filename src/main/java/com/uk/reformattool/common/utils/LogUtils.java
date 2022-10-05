@@ -25,7 +25,7 @@ public class LogUtils {
 
     public static void log(ModuleLevel level, List<FileModel> fileModels) {
         Logger logger = LoggerFactory.getLogger(level.name());
-        if (fileModels.isEmpty()) {
+        if (fileModels.isEmpty() && level.value > ModuleLevel.FILE_LEVEL.value) {
             logger.info("Couldn't find any file that matches conditions. All files are valid.");
             logger.info("Process is now closed.");
             return;
